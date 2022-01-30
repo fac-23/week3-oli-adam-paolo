@@ -12,7 +12,6 @@ const COOKIE_OPTIONS = {
 
 // SIGNING UP ///////////////////////////////////////////////
 
-// Hash the password provided by the user, then call createModelUser to insert user in the users table and return their data as an object.
 const createAuthUser = (username, email, password) => {
 
   return bcrypt.hash(password, 10)
@@ -21,12 +20,9 @@ const createAuthUser = (username, email, password) => {
 };
 
 
-
-
 // SIGNING UP AND SIGNING IN
 
-// Receives a user object, generates a sid and creates and stores a new session
-const saveUserSession = (user) => { 
+const saveUserSession = (user) => { // the user object
 
   const sid = crypto.randomBytes(18).toString("base64");
 
@@ -41,15 +37,15 @@ const saveUserSession = (user) => {
 function verifyUser(email, password) {
 
   return model
-    .getUser(email) // returns a user object containing id, email, password, username
-    .then((user) => { // the user object
+    .getUser(email) // returns id, email, password, username
+    .then((user) => {
       return bcrypt
-        .compare(password, user.password) // encryots the entered password and compares to the stored hashedPassword (user.password). returns true or false
+        .compare(password, user.password) // returns true or false
         .then((match) => {
           if(!match) {
             throw new Error("user not found");
           } else {
-            return user; // if the user is found, returns the user object
+            return user;
           }
         })
     })

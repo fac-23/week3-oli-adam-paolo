@@ -44,12 +44,10 @@ const get = (request, response) => {
 };
 
 const post = (request, response) => {
-
-  // get the data entered by the user
   const { username, email, password } = request.body;
 
   auth
-    .createAuthUser(username, email, password) // hash psw, insert user in users table and return user object
+    .createAuthUser(username, email, password)
     .then((user) => auth.saveUserSession(user))
     .then((sid) => {
       response.cookie("sid", sid, auth.COOKIE_OPTIONS);
